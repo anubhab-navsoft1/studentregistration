@@ -19,7 +19,6 @@ class StudentRegisterCreateListAPIView(generics.GenericAPIView):
             phone_number = serializer.validated_data['phone_number']
             if StudentRegister.objects.filter(phone_number=phone_number).exists():
                 return Response({'message': 'Phone number already exists'})
-            # Hash the password before saving
             password = make_password(serializer.validated_data['password'])
             serializer.validated_data['password'] = password
             serializer.save()
