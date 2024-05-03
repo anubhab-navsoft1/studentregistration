@@ -24,6 +24,15 @@ class StudentRegisterCreateListAPIView(generics.GenericAPIView):
             serializer.save()
             return Response({'message': 'Student has been created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get(self , request , *args , **kwargs):
+        student = StudentRegister.objects.all()
+        student_register_serializer = self.student_register_serializer_class(student , many=True)
+        context = {
+            "Total Students" : student.count(),
+            "Students" : student_register_serializer.data
+        }
+        return Response(context , status=status.HTTP_200_OK)
 
 class StudentLoginAPIView(generics.GenericAPIView):
     serializer_class = StudentLoginSerializer
