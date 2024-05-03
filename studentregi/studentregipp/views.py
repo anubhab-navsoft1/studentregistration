@@ -18,6 +18,7 @@ class StudentRegisterCreateListAPIView(generics.GenericAPIView):
                 return Response({'message': 'Email already exists'})
             phone_number = serializer.validated_data['phone_number']
             if StudentRegister.objects.filter(phone_number=phone_number).exists():
+<<<<<<< HEAD
                 return Response({'message': 'Phone number already exists'})
             # Hash the password before saving
             password = make_password(serializer.validated_data['password'])
@@ -71,3 +72,20 @@ class StudentLoginAPIView(generics.GenericAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
+=======
+                return Response({'message' : 'Phone number already exists'})
+            password = student_register_serializer.validated_data['password']
+            student_register_serializer.save()
+            hashed_password = make_password(password)
+            student_register_serializer.save(password=hashed_password)
+            return Response({'message' : 'Student has been created successfully'} , status=status.HTTP_201_CREATED)
+        return Response(student_register_serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    def get(self , request , *args , **kwargs):
+        student = StudentRegister.objects.all()
+        student_register_serializer = self.student_register_serializer_class(student , many=True)
+        context = {
+            "Total Students" : student.count(),
+            "Students" : student_register_serializer.data
+        }
+        return Response(context , status=status.HTTP_200_OK)
+>>>>>>> 05e37fc1ebca468e92a1e0458e29f9f2896741d1
