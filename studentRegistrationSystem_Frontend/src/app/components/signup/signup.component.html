@@ -1,0 +1,138 @@
+<div class="container mt-4">
+    <div class="jumbotron">
+        <h1 class="display-4 text-center">Welcome to Navsoft University!</h1>
+        <p class="lead">Unlock Your Future: Where Dreams Meet Opportunity!</p>
+        <hr class="my-4">
+        <p>Embark on Your Journey to Success: Empowering Students with Knowledge, Skills, and Opportunities for a
+            Brighter Tomorrow!</p>
+        <p>If you are already enrolled <a routerLink="/login" class="login-link">Login to your student portal</a></p>
+    </div>
+    <ng-container *ngIf="!registrationComplete">
+        <div class="container">
+            <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form mt-5 shadow border">
+                <div class="row">
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="firstname">First Name:</label>
+                            <input type="text" id="firstname" formControlName="firstname" class="form-control">
+                            <div *ngIf="registrationForm.controls['firstname'].touched && registrationForm.controls['firstname']?.hasError('required')"
+                                class="field-error">
+                                First name is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="lastname">Last Name:</label>
+                            <input type="text" id="lastname" formControlName="lastname" class="form-control">
+                            <div *ngIf="registrationForm.controls['lastname'].touched && registrationForm.controls['lastname']?.hasError('required')"
+                                class="field-error">
+                                Last name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" formControlName="age" class="form-control">
+                            <div *ngIf="registrationForm.controls['age'].touched && registrationForm.controls['age']?.hasError('required')"
+                                class="field-error">
+                                Age is required
+                            </div>
+                            <div *ngIf="registrationForm.controls['age'].touched && registrationForm.controls['age']?.hasError('min')"
+                                class="field-error">
+                                Minor candidates are not allowed
+                            </div>
+                            <div *ngIf="registrationForm.controls['age'].touched && registrationForm.controls['age']?.hasError('max')"
+                                class="field-error">
+                                Sr. citizen candidates are not allowed
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" formControlName="gender" class="form-control form-select">
+                                <option value="">-- Select your gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div *ngIf="registrationForm.controls['gender'].touched && (registrationForm.controls['gender']?.hasError('required') || !registrationForm.controls['gender'].value)"
+                                class="field-error">
+                                Gender is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="phonenumber">Phone Number:</label>
+                            <input type="text" id="phonenumber" formControlName="phonenumber" class="form-control">
+                            <div *ngIf="registrationForm.controls['phonenumber'].touched && (registrationForm.controls['phonenumber']?.hasError('required') || registrationForm.controls['phonenumber']?.hasError('minLength') || registrationForm.controls['phonenumber']?.hasError('maxLength'))"
+                                class="field-error">
+                                Enter a valid Mobile no.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="email">Email:</label>
+                            <input type="text" id="email" formControlName="email" class="form-control">
+                            <div *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email']?.hasError('required')"
+                                class="field-error">
+                                Email is required
+                            </div>
+                            <div *ngIf="registrationForm.controls['email'].touched && registrationForm.controls['email']?.hasError('email')"
+                                class="field-error">
+                                Enter a valid email
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" formControlName="password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col col-6">
+                        <div class="form-group mb-4">
+                            <label for="confirmPassword">Confirm Password:</label>
+                            <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                                class="form-control">
+                            <div *ngIf="registrationForm.controls['confirmPassword'].touched && registrationForm.controls['confirmPassword']?.hasError('passwordMismatch')"
+                                class="field-error">
+                                Passwords doesn't match
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Register Now
+                </button>
+
+            </form>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="registrationComplete">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading text-center">Congratulations {{registeredDetails.enrolledFirstname}}
+                {{registeredDetails.enrolledLastname}}!</h4>
+            <p>
+                You have successfully registered with Navsoft University.<br />
+                Your enrollment # is {{registeredDetails.enrollmentId}}
+            </p>
+            <hr>
+            <p class="mb-0">You can now login to your student portal with your email and password.</p>
+        </div>
+    </ng-container>
+</div>
