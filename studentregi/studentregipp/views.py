@@ -5,10 +5,10 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate
+
 
 class StudentRegisterCreateListAPIView(generics.GenericAPIView):
-    serializer_class = StudentRegisterSerializer
+    student_register_serializer_class = StudentRegisterSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -34,3 +34,12 @@ class StudentRegisterCreateListAPIView(generics.GenericAPIView):
         }
         return Response(context , status=status.HTTP_200_OK)
 
+class StudentLoginAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        student_login_serializer = StudentLoginSerializer(data=request.data)
+        if student_login_serializer.is_valid():
+            user = student_login_serializer.validated_data['student']
+            refresh = RefreshToken.for_user(user)
+            return Response({'refresh': str(refresh), 'access': str(refresh.access_token)})
+        else:
+            return Response(student_login_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
