@@ -1,7 +1,8 @@
 from django.urls import path
-from studentregipp import views
+from .views import StudentRegisterCreateListAPIView, StudentLoginAPIView, StudentDetailsRetrieveAPIView
 
 urlpatterns = [
-    path('studentregister/' , views.StudentRegisterCreateListAPIView.as_view() , name='student-register'),
-    path('studentlogin/' , views.StudentLoginAPIView.as_view() , name='student-login')
+    path('students/', StudentRegisterCreateListAPIView.as_view(), name='student-list-create'),
+    path('students/<int:pk>/', StudentDetailsRetrieveAPIView.as_view(), name='student-details'),
+    path('login/', StudentLoginAPIView.as_view(), name='login'),
 ]
