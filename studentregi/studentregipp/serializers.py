@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentRegister
+<<<<<<< HEAD
         fields = ['id', 'username', 'first_name', 'last_name', 'age', 'gender', 'email', 'phone_number', 'password']
         # extra_kwargs = {'password': {'write_only': True}}
 
@@ -34,3 +35,6 @@ class StudentLoginSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+=======
+        fields = ['id' , 'first_name' , 'last_name' , 'age' , 'gender' , 'email' , 'phone_number' , 'password']
+>>>>>>> souparna
