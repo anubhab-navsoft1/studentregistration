@@ -5,7 +5,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.shortcuts import get_object_or_404
 
 class StudentRegisterCreateListAPIView(generics.GenericAPIView):
     serializer_class = StudentRegisterSerializer
@@ -43,3 +43,30 @@ class StudentLoginAPIView(generics.GenericAPIView):
             return Response({'refresh': str(refresh), 'access': str(refresh.access_token)})
         else:
             return Response(student_login_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class StudentDetailsRetrieveAPIView(generics.GenericAPIView):
+    serializer_class = StudentRegisterSerializer
+
+    def get(self, request, pk):
+        student = get_object_or_404(StudentRegister, pk=pk)
+        serializer = self.get_serializer(student)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        student = get_object_or_404(StudentRegister, pk=pk)
+        serializer = self.get_serializer(student, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        student = get_object_or_404(StudentRegister, pk=pk)
+        student.delete()
+        return Response({'message': 'Student deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
